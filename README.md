@@ -1,6 +1,18 @@
-# Julia Set Vector Drawing Generator
+# Fractal Vector Drawing Generator
 
 ## Overview
+
+This is a collection of scripts that generate vector graphics of the
+outlines of various fractals, in SVG format.
+
+The motivation for this was to be able to import fractal curves into CAM
+software to convert to toolpaths to stress-test accuracy. I considered
+exporting to the DXF drawing format directly, but SVG had far fewer
+headaches (and can be viewed in a web browser).
+
+SVG can, of course, be converted into pretty pictures as well.
+
+## Julia Set Script
 
 This script renders Julia sets as SVG images.
 
@@ -9,16 +21,9 @@ Julia sets are fractals that look a bit like the more famous Mandelbrot set
 connected and which are disconnected).
 
 As you iterate the generator equation, the edge of the fractal gets more and
-more detailed and convoluted. This makes them a great stress-test for CNC
-engraving and cutting machines.
+more detailed and convoluted.
 
-The purpose of this script is to generate vector graphics that can be
-imported into CAM software and converted into drawings and/or toolpaths. I
-considered exporting to the DXF drawing format directly, but SVG had far
-fewer headaches (and can be viewed in a web browser).
-
-
-## Script Documentation
+### Script Documentation
 
 <!-- NOTE - We have to copypasta this, since GitHub has no embed feature. -->
 ```
@@ -44,7 +49,7 @@ after some number of iterations.
 
 ```
 
-## Gallery
+### Gallery
 
 ![A connected Julia set.](./plots/julia-connected.svg)
 
