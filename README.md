@@ -51,9 +51,11 @@ after some number of iterations.
 
 ### Gallery
 
-![A connected Julia set.](./plots/julia-connected.svg)
+![A connected Julia set.](./plots/julia-connected.svg | width=400)
+![A disconnected Julia set.](./plots/julia-disconnected.svg | width=400)
 
-![A disconnected Julia set.](./plots/julia-disconnected.svg)
+![An almost-connected Julia set.](./plots/julia-islands.svg | width=400)
+![A tree-shaped Julia set.](./plots/julia-tree.svg | width=400)
 
 
 _(This is the end of the file.)_
