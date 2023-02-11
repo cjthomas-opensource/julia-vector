@@ -153,6 +153,7 @@ sub GetJuliaContours
 
 
       # Build the first path from the positive roots.
+      # Store the positive and negative roots in different lists.
 
       for ($vidx = 0; defined $$oldpath_p[$vidx]; $vidx += 2)
       {
@@ -183,39 +184,65 @@ sub GetJuliaContours
         $new_re = $old_mag * cos($old_ang);
         $new_im = $old_mag * sin($old_ang);
 
-
-        # Store the positive and negative roots in different lists.
-
+        # Store the positive roots.
         $$firstpath_p[$vidx] = $new_re;
         $$firstpath_p[$vidx+1] = $new_im;
       }
 
 
-      # Rotate the list so that the big discontinuity is at the end.
+      # Since the curve isn't guaranteed to be in the right half-plane,
+      # flip the sign of points to minimize discontinuities.
 
-      my ($listsize, $thisdiff, $worstdiff, $worstidx);
+      my ($listsize);
       my ($this_re, $this_im, $next_re, $next_im);
+      my ($thisdiff, $flipdiff);
+
+      for ($vidx = 2; defined $$firstpath_p[$vidx]; $vidx += 2)
+      {
+        $this_re = $$firstpath_p[$vidx-2];
+        $this_im = $$firstpath_p[$vidx-1];
+        $next_re = $$firstpath_p[$vidx];
+        $next_im = $$firstpath_p[$vidx+1];
+
+        $thisdiff = ($next_re - $this_re) * ($next_re - $this_re)
+          + ($next_im - $this_im) * ($next_im - $this_im);
+        # A - (-B) = A + B.
+        $flipdiff = ($next_re + $this_re) * ($next_re + $this_re)
+          + ($next_im + $this_im) * ($next_im + $this_im);
+
+        if ($flipdiff < $thisdiff)
+        {
+          $$firstpath_p[$vidx] = - $next_re;
+          $$firstpath_p[$vidx+1] = - $next_im;
+        }
+      }
+
+
+      # Rotate the list so that the discontinuity between the first list
+      # and the 180 degree flipped list is as small as possible.
+
+      my ($bestdiff, $bestidx);
       my (@scratchpoints);
 
-      $worstdiff = -1;
-      $worstidx = undef;
+      $bestdiff = 100; # Actual limit is 4, within the bounding circle.
+      $bestidx = undef;
       $listsize = scalar(@$firstpath_p);
 
       for ($vidx = 0; defined $$firstpath_p[$vidx]; $vidx += 2)
       {
         $this_re = $$firstpath_p[$vidx];
         $this_im = $$firstpath_p[$vidx+1];
-        $next_re = $$firstpath_p[($vidx+2) % $listsize];
-        $next_im = $$firstpath_p[($vidx+3) % $listsize];
+        $next_re = - $$firstpath_p[($vidx+2) % $listsize];
+        $next_im = - $$firstpath_p[($vidx+3) % $listsize];
 
         $thisdiff = ($next_re - $this_re) * ($next_re - $this_re)
           + ($next_im - $this_im) * ($next_im - $this_im);
 
-        if ($thisdiff > $worstdiff)
+        if ($thisdiff < $bestdiff)
         {
-          $worstdiff = $thisdiff;
+          $bestdiff = $thisdiff;
           # Store the location of the point _after_ the jump.
-          $worstidx = ($vidx+2) % $listsize;
+          $bestidx = ($vidx+2) % $listsize;
         }
       }
 
@@ -227,7 +254,7 @@ sub GetJuliaContours
       for ($vidx = 0; $vidx < $listsize; $vidx++)
       {
         $$firstpath_p[$vidx] =
-          $scratchpoints[ ($vidx + $worstidx) % $listsize ];
+          $scratchpoints[ ($vidx + $bestidx) % $listsize ];
       }
 
 
