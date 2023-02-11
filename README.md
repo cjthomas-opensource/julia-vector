@@ -51,11 +51,11 @@ after some number of iterations.
 
 ### Gallery
 
-![A connected Julia set.](./plots/julia-connected.png)
-![A disconnected Julia set.](./plots/julia-disconnected.png)
+![A connected Julia set.](./auxiliary/julia-connected.png)
+![A disconnected Julia set.](./auxiliary/julia-disconnected.png)
 
-![An almost-connected Julia set.](./plots/julia-islands.png)
-![A tree-shaped Julia set.](./plots/julia-tree.png)
+![An almost-connected Julia set.](./auxiliary/julia-islands.png)
+![A tree-shaped Julia set.](./auxiliary/julia-tree.png)
 
 
 _(This is the end of the file.)_
